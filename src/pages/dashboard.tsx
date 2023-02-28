@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { AuthContext } from "@/Context/AuthContext";
 import { api } from "@/services/api";
+import { withSSRSig } from "@/utils/withSSRSig";
 import {
   Flex,
   Container,
@@ -26,15 +27,20 @@ import {
   CardFooter,
   Button,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RiImage2Fill, RiRedPacketFill } from "react-icons/ri";
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext);
-
+  const [imgUser, setimgUser] = useState([]);
   useEffect(() => {
-    api.get("/profile").then((response) => console.log(response.data));
-  });
+    api.get('/file').then(response =>{      
+      setimgUser(response.data)
+      console.log(response.data)
+      console.log('IMAGE USER',imgUser)
+      
+    })
+  }, []);
+
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -55,7 +61,7 @@ export default function Dashboard() {
                   <Heading size="md">Total de Imagens</Heading>
 
                   <Text py="2" fontSize="64">
-                    100
+                    {imgUser.length}
                   </Text>
                 </CardBody>
               </Stack>
@@ -85,27 +91,25 @@ export default function Dashboard() {
               <Table>
                 <Thead bg="yellow.500" color="black">
                   <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
+                    <Th>Imagem</Th>
+                    <Th>Impresso</Th>
+                    <Th>Data de Upload</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
+                  {imgUser.map(image =>{
+                    return(
+                    <Tr>
+                      <Td>{image.name}</Td>
+                      {image.printed?<Td> Sim</Td>:<Td> Não</Td>}
+                      <Td>{new Intl.DateTimeFormat('pt-BR').format(new Date(image.createdAt))}</Td>
                   </Tr>
-                  <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                    <Td isNumeric>30.48</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td isNumeric>0.91444</Td>
-                  </Tr>
+                    )
+                  }
+                    
+                  )}
+                  
+                  
                 </Tbody>
               </Table>
             </TableContainer>
@@ -115,3 +119,10 @@ export default function Dashboard() {
     </Flex>
   );
 }
+
+export const getServerSideProps = withSSRSig(async(ctx) =>{
+ 
+  return {
+    props:{}
+  }
+})

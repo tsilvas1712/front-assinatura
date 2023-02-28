@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 import Router from "next/router";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { parseCookies, setCookie } from "nookies";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
 
 type User = {
   user: {
@@ -34,10 +34,16 @@ type AuthProviderProps = {
 
 export const AuthContext = createContext({} as AuthContextData);
 
+export function signOut(){
+  destroyCookie(undefined,'user.token')
+  Router.push('/');
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user;
 
+  
   useEffect(() => {
     const { "user.token": token } = parseCookies();
 
@@ -45,6 +51,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.get("/profile").then((response) => {
         const { user, plan } = response.data;
         setUser({ user, plan });
+      }).catch(err=>{
+        signOut();
       });
     }
   }, []);

@@ -12,17 +12,36 @@ export function Sidebar() {
       borderRadius={8}
     >
       <Stack spacing="12" align="flex-start">
-        <Box>
+        <Box width="100%">
           <Text fontWeight="bold" color="gray.900" fontSize="small">
             MENU
           </Text>
-          <Stack spacing="4" mt="8" align="stretch">
-            <Link display="flex" alignItems="center" color="gray.900" py="1">
+          <Stack spacing="4" mt="8" align="stretch" width="100%">
+            <Link href="/dashboard" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
+              background:"yellow.500"
+            }} >
               <Icon as={RiDashboardLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Painel
               </Text>
             </Link>
+            <Link href="/galeria" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
+              background:"yellow.500"
+            }} >
+              <Icon as={RiDashboardLine} fontSize="20" />
+              <Text ml="4" fontWeight="medium">
+                Galeria
+              </Text>
+            </Link>
+            <Link href="/entrega" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
+              background:"yellow.500"
+            }} >
+              <Icon as={RiDashboardLine} fontSize="20" />
+              <Text ml="4" fontWeight="medium">
+                Entregas
+              </Text>
+            </Link>
+            
           </Stack>
         </Box>
       </Stack>

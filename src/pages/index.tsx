@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Input } from "@/components/Form/Input";
 import { AuthContext } from "@/Context/AuthContext";
+import { withSSRGuest } from "@/utils/withSSRGuest";
 import { Flex, Button, Stack, Image } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { redirect } from "next/dist/server/api-utils";
+import { parseCookies } from "nookies";
 import { FormEvent, useContext, useState } from "react";
 
 export default function Home() {
@@ -64,3 +68,10 @@ export default function Home() {
     </Flex>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async(ctx) =>{
+ 
+  return {
+    props:{}
+  }
+})

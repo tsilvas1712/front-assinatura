@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { AuthContext } from "@/Context/AuthContext";
+import { AuthContext, signOut } from "@/Context/AuthContext";
 import { api } from "@/services/api";
 import { Flex, Image, Icon, HStack, Box, Text, Avatar } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
@@ -7,10 +7,7 @@ import { RiNotification2Line, RiUserAddLine } from "react-icons/ri";
 
 export function Header() {
   const { user } = useContext(AuthContext);
-  console.log("user", user);
-  useEffect(() => {
-    api.get("/profile").then((response) => console.log(response.data));
-  });
+   
   return (
     <Flex
       as="header"
@@ -47,7 +44,7 @@ export function Header() {
           </Box>
           <Avatar
             size="md"
-            name="Thiago Silva"
+            name={user?.user.name}
             src="https://github.com/tsnetwork.png"
           />
         </Flex>
