@@ -1,19 +1,19 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Input } from "@/components/Form/Input";
-import { AuthContext } from "@/Context/AuthContext";
-import { withSSRGuest } from "@/utils/withSSRGuest";
-import { Flex, Button, Stack, Image } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { redirect } from "next/dist/server/api-utils";
-import { parseCookies } from "nookies";
-import { FormEvent, useContext, useState } from "react";
+import {Input} from "@/components/Form/Input";
+import {AuthContext} from "@/Context/AuthContext";
+import {withSSRGuest} from "@/utils/withSSRGuest";
+import {Flex, Button, Stack, Image} from "@chakra-ui/react";
+import {GetServerSideProps} from "next";
+import {redirect} from "next/dist/server/api-utils";
+import {parseCookies} from "nookies";
+import {FormEvent, useContext, useState} from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { signIn } = useContext(AuthContext);
-
+  
+  const {signIn} = useContext(AuthContext);
+  
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const data = {
@@ -22,6 +22,7 @@ export default function Home() {
     };
     await signIn(data);
   }
+  
   return (
     <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center">
       <Flex
@@ -43,7 +44,7 @@ export default function Home() {
           justifyContent="center"
           alignItems="center"
         >
-          <Image src="/assets/img/logo_seize.png" w="60%" />
+          <Image src="/assets/img/logo_seize.png" w="60%"/>
         </Flex>
         <Stack spacing="4">
           <Input
@@ -69,9 +70,9 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps = withSSRGuest(async(ctx) =>{
- 
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  
   return {
-    props:{}
+    props: {}
   }
 })
