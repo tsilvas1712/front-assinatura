@@ -1,33 +1,25 @@
+/* eslint-disable react/jsx-key */
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
-import { AuthContext } from "@/Context/AuthContext";
 import { api } from "@/services/api";
 import { withSSRSig } from "@/utils/withSSRSig";
 import {
-  Flex,
-  Container,
-  SimpleGrid,
-  Box,
-  Text,
-  Icon,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Image,
   Card,
-  Stack,
   CardBody,
+  Flex,
   Heading,
-  CardFooter,
-  Button,
+  Icon,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RiImage2Fill, RiRedPacketFill } from "react-icons/ri";
 
 export default function Dashboard() {
@@ -97,9 +89,9 @@ export default function Dashboard() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {imgUser.map(image =>{
+                  {imgUser.map((image,key) =>{
                     return(
-                    <Tr>
+                    <Tr key={key}>
                       <Td>{image.name}</Td>
                       {image.printed?<Td> Sim</Td>:<Td> Não</Td>}
                       <Td>{new Intl.DateTimeFormat('pt-BR').format(new Date(image.createdAt))}</Td>

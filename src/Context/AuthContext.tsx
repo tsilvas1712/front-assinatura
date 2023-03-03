@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 import Router from "next/router";
-import { createContext, ReactNode, useEffect, useState } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 type User = {
   user: {
@@ -60,6 +60,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function signIn({ email, password }: SignInCredentials) {
     try {
       const response = await api.post("auth", { email, password });
+
+      console.log("RESPONSE",response.data);
 
       const { plan, token, user } = response.data;
       setUser({
