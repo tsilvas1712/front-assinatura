@@ -24,11 +24,15 @@ import { RiImage2Fill, RiRedPacketFill } from "react-icons/ri";
 
 export default function Dashboard() {
   const [imgUser, setimgUser] = useState([]);
+  const [deliveryUser, setdeliveryUser] = useState([]);
   useEffect(() => {
     api.get('/file').then(response =>{      
-      setimgUser(response.data)
-      console.log(response.data)
-      console.log('IMAGE USER',imgUser)
+      setimgUser(response.data)    
+    })
+
+    api.get('/delivery').then(response => {
+      console.log(response.data);
+      setdeliveryUser(response.data)
       
     })
   }, []);
@@ -71,7 +75,7 @@ export default function Dashboard() {
                   <Heading size="md">Total de Entregas</Heading>
 
                   <Text py="2" fontSize="64">
-                    100
+                  {deliveryUser.length}
                   </Text>
                 </CardBody>
               </Stack>
