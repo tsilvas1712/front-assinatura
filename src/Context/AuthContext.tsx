@@ -1,7 +1,8 @@
 import { api } from "@/services/api";
+import { useToast } from "@chakra-ui/react";
 import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 
 type User = {
   user: {
@@ -42,7 +43,10 @@ export function signOut() {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
+  
   const isAuthenticated = !!user;
+
+  const toast = useToast();
 
   useEffect(() => {
     const { "user.token": token } = parseCookies();
@@ -61,11 +65,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   async function signIn({ email, password }: SignInCredentials) {
-    try {
-      const response = await api.post("auth", { email, password });
-
-      console.log("RESPONSE", response.data);
-
+  
+      await api.post("auth", { email, password }).then(response =>{
+       
       const { plan, token, user } = response.data;
       setUser({
         user,
@@ -78,14 +80,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
+      toast({
+          title:"Seja Bem Vindo",         
+          status:"success",
+          duration:5000,
+          isClosable:true,
+          position:'top-right'
+        })
+
+       
+
       if (user.is_admin) {
         Router.push("/admin");
       } else {
         Router.push("/dashboard");
       }
-    } catch (err) {
-      console.log(err);
-    }
+
+      }).catch(err=>{   
+        toast({
+          title:"Erro na Autenticação",
+          description:"Verifique as informações digitadas",
+          status:"error",
+          duration:3000,
+          isClosable:true,
+          position:'top'
+        })
+      });
+
+   
   }
 
   return (

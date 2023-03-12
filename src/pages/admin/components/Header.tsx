@@ -1,23 +1,22 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { AuthContext, signOut } from "@/Context/AuthContext";
-import { api } from "@/services/api";
 import {
-  Flex,
-  Image,
-  Icon,
-  HStack,
-  Box,
-  Text,
-  Avatar,
-  Menu,
-  MenuButton,
-  MenuGroup,
-  MenuItem,
-  MenuDivider,
-  MenuList,
+    Avatar,
+    Box,
+    Flex,
+    HStack,
+    Icon,
+    Image,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuGroup,
+    MenuItem,
+    MenuList,
+    Text,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
-import { RiNotification2Line, RiUserAddLine } from "react-icons/ri";
+import { useContext } from "react";
+import { RiNotification2Line } from "react-icons/ri";
 
 export function Header() {
   const { user } = useContext(AuthContext);
@@ -32,7 +31,7 @@ export function Header() {
       px="6"
       align="center"
       boxShadow="md"
-      bg="yellow.100"
+      bg="lifewall-yellow"
     >
       <Image src="/assets/img/logo_seize.png" w="10%" />
       <Text>Área Administrativa</Text>

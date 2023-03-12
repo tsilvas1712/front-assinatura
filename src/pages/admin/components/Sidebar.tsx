@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Link, Icon } from "@chakra-ui/react";
+import { Box, Icon, Link, Stack, Text } from "@chakra-ui/react";
 import { RiDashboardLine } from "react-icons/ri";
 export function Sidebar() {
   return (
@@ -6,7 +6,7 @@ export function Sidebar() {
       as="aside"
       w="64"
       mr="8"
-      bg="yellow.100"
+      bg="lifewall-yellow"
       p="2"
       boxShadow="lg"
       borderRadius={8}

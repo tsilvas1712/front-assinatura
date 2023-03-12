@@ -9,6 +9,8 @@ import {
   Flex,
   Heading,
   Icon,
+  Progress,
+  ProgressLabel,
   Stack,
   Table,
   TableContainer,
@@ -17,7 +19,7 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { RiImage2Fill, RiRedPacketFill } from "react-icons/ri";
@@ -25,17 +27,44 @@ import { RiImage2Fill, RiRedPacketFill } from "react-icons/ri";
 export default function Dashboard() {
   const [imgUser, setimgUser] = useState([]);
   const [deliveryUser, setdeliveryUser] = useState([]);
-  useEffect(() => {
-    api.get('/file').then(response =>{      
-      setimgUser(response.data)    
-    })
+  const [plan, setPlan] = useState([]);
+  const [termModal, setTermModal] = useState(false);
 
-    api.get('/delivery').then(response => {
-      console.log(response.data);
-      setdeliveryUser(response.data)
-      
-    })
+  useEffect(() => {
+    api
+      .get("/plan")
+      .then((response) => {
+        setPlan(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    api
+      .get("/file")
+      .then((response) => {
+        setimgUser(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    api
+      .get("/delivery")
+      .then((response) => {
+        setdeliveryUser(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
+  function handleOpenTermModal() {
+    setTermModal(true);
+  }
+
+  function handleCloseTermModal() {
+    setTermModal(false);
+  }
 
   return (
     <Flex direction="column" h="100vh">
@@ -75,15 +104,28 @@ export default function Dashboard() {
                   <Heading size="md">Total de Entregas</Heading>
 
                   <Text py="2" fontSize="64">
-                  {deliveryUser.length}
+                    {deliveryUser.length}
                   </Text>
                 </CardBody>
               </Stack>
             </Card>
           </Flex>
+          <Text as="b">Capacidade de Fotos</Text>
+          <Progress
+            colorScheme="telegram"
+            height="64px"
+            size="xs"
+            value={imgUser.length}
+            max={plan.limit_photos}
+            isAnimated={true}
+          >
+            <ProgressLabel fontSize="lg" color="black">
+              Fotos: {imgUser.length}
+            </ProgressLabel>
+          </Progress>
           <Flex h="100%" p="4" direction="column" gap="4">
             <Heading size="md">Últimas Imagens Importadas</Heading>
-            <TableContainer bg="yellow.100">
+            <TableContainer bg="lifewall-yellow">
               <Table>
                 <Thead bg="yellow.500" color="black">
                   <Tr>
@@ -93,19 +135,19 @@ export default function Dashboard() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {imgUser.map((image,key) =>{
-                    return(
-                    <Tr key={key}>
-                      <Td>{image.name}</Td>
-                      {image.printed?<Td> Sim</Td>:<Td> Não</Td>}
-                      <Td>{new Intl.DateTimeFormat('pt-BR').format(new Date(image.createdAt))}</Td>
-                  </Tr>
-                    )
-                  }
-                    
-                  )}
-                  
-                  
+                  {imgUser.map((image, key) => {
+                    return (
+                      <Tr key={key}>
+                        <Td>{image.name}</Td>
+                        {image.printed ? <Td> Sim</Td> : <Td> Não</Td>}
+                        <Td>
+                          {new Intl.DateTimeFormat("pt-BR").format(
+                            new Date(image.createdAt)
+                          )}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
                 </Tbody>
               </Table>
             </TableContainer>
@@ -116,9 +158,8 @@ export default function Dashboard() {
   );
 }
 
-export const getServerSideProps = withSSRSig(async(ctx) =>{
- 
+export const getServerSideProps = withSSRSig(async (ctx) => {
   return {
-    props:{}
-  }
-})
+    props: {},
+  };
+});

@@ -1,26 +1,40 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { AuthContext, signOut } from "@/Context/AuthContext";
-import { api } from "@/services/api";
 import {
-  Flex,
-  Image,
-  Icon,
-  HStack,
-  Box,
-  Text,
   Avatar,
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Image,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuGroup,
   MenuItem,
-  MenuDivider,
   MenuList,
+  Text,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
-import { RiNotification2Line, RiUserAddLine } from "react-icons/ri";
+import Router from "next/router";
+import { useContext, useState } from "react";
+import { RiNotification2Line } from "react-icons/ri";
+import { ModalTermo } from "./ModalTermo";
 
 export function Header() {
   const { user } = useContext(AuthContext);
+  const [termModal, setTermModal] = useState(false);
+  function handleOpenTermModal() {
+   
+    setTermModal(true);
+  }
+
+  function handleCloseTermModal() {
+    setTermModal(false);
+  }
+
+  function handleProfile(){
+    Router.push('/perfil')
+  }
 
   return (
     <Flex
@@ -32,7 +46,7 @@ export function Header() {
       px="6"
       align="center"
       boxShadow="md"
-      bg="yellow.100"
+      bg="lifewall-yellow"
     >
       <Image src="/assets/img/logo_seize.png" w="10%" />
       <Text>Meu Plano: {user?.plan.name}</Text>
@@ -62,12 +76,13 @@ export function Header() {
             </MenuButton>
             <MenuList>
               <MenuGroup title="Perfil">
-                <MenuItem>Meu Perfil</MenuItem>
+                <MenuItem onClick={()=>{handleProfile()}}>Meu Perfil</MenuItem>
                 <MenuItem>Pagamentos </MenuItem>
               </MenuGroup>
               <MenuDivider />
               <MenuGroup title="Ajuda">
                 <MenuItem>Docs</MenuItem>
+                <MenuItem onClick={()=>{handleOpenTermModal()}}>Instruções</MenuItem>
               </MenuGroup>
               <MenuDivider />
               <MenuItem onClick={() => signOut()}>Sair</MenuItem>
@@ -75,6 +90,7 @@ export function Header() {
           </Menu>
         </Flex>
       </Flex>
+      <ModalTermo isOpen={termModal} onRequestClose={handleCloseTermModal} />
     </Flex>
   );
 }
