@@ -30,6 +30,7 @@ export default function Galeria() {
   const [selectedFile, setSelectedFile] = useState(null);
   useEffect(() => {
     api.get("/file").then((response) => {
+      console.log("ibagens", response.data);
       setimgsUser(response.data);
     });
   }, []);
@@ -55,7 +56,7 @@ export default function Galeria() {
   const delivered = 2;
 
   const limit_photos = 10;
-  const photos = 2;
+  const photos = imgsUser.length;
 
   function downloadImage(image) {
     console.log("image");
@@ -77,11 +78,11 @@ export default function Galeria() {
   }
 
   return (
-    <Flex direction="column" h="100vh">
+    <Flex direction="column" h="100vh" overflow="hidden">
       <Header />
-      <Flex w="100%" my="6" maxW={1480} mx="auto" px="2" h="100vh">
+      <Flex w="100%" my="6" maxW={1480} mx="auto" px="2">
         <Sidebar />
-        <Flex as="div" direction="column" w="100%" gap="4">
+        <Flex as="div" direction="column" w="100%" h="100%" gap="4">
           <Flex>
             <Heading>GALERIA</Heading>
             <Spacer />
@@ -102,48 +103,58 @@ export default function Galeria() {
               </Button>
             </Flex>
           </Flex>
-          <Wrap spacing="6">
+          <Wrap
+            align="center"
+            justify="center"
+            spacing="6"
+            p="2"
+            overflowY="auto"
+          >
             {imgsUser.map((image, key) => {
               return (
                 <Flex
                   as="div"
                   direction="column"
                   key={key}
-                  width="350px"
+                  width="150px"
                   bg="white"
                   p="8"
                   boxShadow="lg"
+                  align="center"
                 >
-                  <WrapItem opacity={image.printed ? "30%" : ""}>
-                    <Image
-                      src={image.url}
-                      fallbackSrc="https://via.placeholder.com/150"
-                      maxW="300px"
-                    />
+                  <WrapItem opacity={image.printed ? "30%" : ""} w="100px">
+                    <Flex direction="column">
+                      <Image
+                        boxSize="100px"
+                        objectFit="cover"
+                        src={image.url}
+                        fallbackSrc="https://via.placeholder.com/150"
+                      />
+                      <Flex mt="2">
+                        <Text hidden>{image.name}</Text>
+                        <Spacer />
+                        <Button
+                          colorScheme="blue"
+                          variant="solid"
+                          onClick={() => {
+                            downloadImage(image);
+                          }}
+                        >
+                          <Icon as={RiDownload2Fill} font="16" />
+                        </Button>
+                        <Button
+                          ml="2"
+                          colorScheme="red"
+                          variant="solid"
+                          onClick={() => {
+                            deleteImage(image.id);
+                          }}
+                        >
+                          <Icon as={RiDeleteBin2Fill} font="16" />
+                        </Button>
+                      </Flex>
+                    </Flex>
                   </WrapItem>
-                  <Flex mt="2" justifyContent="center">
-                    <Text>{image.name}</Text>
-                    <Spacer />
-                    <Button
-                      colorScheme="blue"
-                      variant="solid"
-                      onClick={() => {
-                        downloadImage(image);
-                      }}
-                    >
-                      <Icon as={RiDownload2Fill} font="16" />
-                    </Button>
-                    <Button
-                      ml="2"
-                      colorScheme="red"
-                      variant="solid"
-                      onClick={() => {
-                        deleteImage(image.id);
-                      }}
-                    >
-                      <Icon as={RiDeleteBin2Fill} font="16" />
-                    </Button>
-                  </Flex>
                 </Flex>
               );
             })}

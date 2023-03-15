@@ -18,31 +18,51 @@ export function Sidebar() {
             MENU
           </Text>
           <Stack spacing="4" mt="8" align="stretch" width="100%">
-            <Link href="/dashboard" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
-              background:"yellow.500"
-            }} >
+            <Link
+              href="/dashboard"
+              display="flex"
+              alignItems="center"
+              borderRadius="md"
+              p="2"
+              _hover={{
+                background: "yellow.500",
+              }}
+            >
               <Icon as={RiDashboardLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Painel
               </Text>
             </Link>
-            <Link href="/galeria" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
-              background:"yellow.500"
-            }} >
+            <Link
+              href="/galeria"
+              display="flex"
+              alignItems="center"
+              borderRadius="md"
+              p="2"
+              _hover={{
+                background: "yellow.500",
+              }}
+            >
               <Icon as={RiDashboardLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Galeria
               </Text>
             </Link>
-            <Link href="/entrega" display="flex" alignItems="center" borderRadius="md"  p="2" _hover={{
-              background:"yellow.500"
-            }} >
+            <Link
+              href="/entrega"
+              display="flex"
+              alignItems="center"
+              borderRadius="md"
+              p="2"
+              _hover={{
+                background: "yellow.500",
+              }}
+            >
               <Icon as={RiDashboardLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Entregas
               </Text>
             </Link>
-            
           </Stack>
         </Box>
       </Stack>

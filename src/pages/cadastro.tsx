@@ -1,26 +1,55 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Input } from "@/components/Form/Input";
+import { api } from "@/services/api";
 import { withSSRGuest } from "@/utils/withSSRGuest";
-import { Button, Flex, Heading, Image, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
+import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 export default function Home() {
-  const [name,setName] = useState("")
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { register, handleSubmit, control } = useForm();
+  const toast = useToast();
 
-  
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    const data = {
-      name,
-      email,
-      password,
+  async function handleSignIn(values) {
+    const { name, email, password } = values;
 
-    };
+    await api
+      .post("/users", { name, email, password })
+      .then((res) => {
+        console.log(res.status);
+        toast({
+          title: "Cadastro Efetuado com Sucesso",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
 
+        window.location.href = " https://lifewall.art/plano-de-assinatura/";
+      })
+      .catch((err) => {
+        toast({
+          title: "Erro ao Cadastrar",
+          description: "Verifique as informações digitadas",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      });
   }
-  
+
   return (
     <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center">
       <Flex
@@ -34,7 +63,7 @@ export default function Home() {
         borderRadius={8}
         flexDir="column"
         justifyItems="center"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(handleSignIn)}
       >
         <Flex
           maxWidth={300}
@@ -43,8 +72,10 @@ export default function Home() {
           alignItems="center"
         >
           <Flex direction="column" alignItems="center" mb="4">
-          <Image src="/assets/img/logo_seize.png" w="60%"/>
-          <Heading as="h4" size="lg">Cadastro de Usuário</Heading>
+            <Image src="/assets/img/logo_seize.png" w="60%" />
+            <Heading as="h4" size="lg">
+              Cadastro de Usuário
+            </Heading>
           </Flex>
         </Flex>
         <Stack spacing="4">
@@ -52,22 +83,19 @@ export default function Home() {
             name="name"
             label="Nome Completo"
             type="text"
-            value={name}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("name")}
           />
           <Input
             name="email"
             label="E-mail"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
           <Input
             name="password"
             label="Senha"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
           />
           <Input
             name="password"
@@ -86,8 +114,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = withSSRGuest(async (ctx) => {
-  
   return {
-    props: {}
-  }
-})
+    props: {},
+  };
+});

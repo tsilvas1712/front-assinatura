@@ -110,19 +110,21 @@ export default function Dashboard() {
               </Stack>
             </Card>
           </Flex>
-          <Text as="b">Capacidade de Fotos</Text>
-          <Progress
-            colorScheme="telegram"
-            height="64px"
-            size="xs"
-            value={imgUser.length}
-            max={plan.limit_photos}
-            isAnimated={true}
-          >
-            <ProgressLabel fontSize="lg" color="black">
-              Fotos: {imgUser.length}
-            </ProgressLabel>
-          </Progress>
+          <Flex direction="column">
+            <Text as="b">Capacidade de Fotos</Text>
+            <Progress
+              colorScheme="telegram"
+              height="30px"
+              size="xs"
+              value={imgUser.length}
+              max={plan.limit_photos}
+              isAnimated={true}
+            >
+              <ProgressLabel fontSize="lg" color="black">
+                Fotos: {imgUser.length}
+              </ProgressLabel>
+            </Progress>
+          </Flex>
           <Flex h="100%" p="4" direction="column" gap="4">
             <Heading size="md">Últimas Imagens Importadas</Heading>
             <TableContainer bg="lifewall-yellow">
@@ -135,10 +137,10 @@ export default function Dashboard() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {imgUser.map((image, key) => {
+                  {imgUser.slice(0, 5).map((image, key) => {
                     return (
                       <Tr key={key}>
-                        <Td>{image.name}</Td>
+                        <Td>{image.name.substr(0, 15)}</Td>
                         {image.printed ? <Td> Sim</Td> : <Td> Não</Td>}
                         <Td>
                           {new Intl.DateTimeFormat("pt-BR").format(

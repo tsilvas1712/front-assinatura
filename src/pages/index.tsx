@@ -2,7 +2,7 @@
 import {Input} from "@/components/Form/Input";
 import {AuthContext} from "@/Context/AuthContext";
 import {withSSRGuest} from "@/utils/withSSRGuest";
-import {Flex, Button, Stack, Image} from "@chakra-ui/react";
+import {Flex, Button, Stack, Image, Link, Text} from "@chakra-ui/react";
 import {GetServerSideProps} from "next";
 import {redirect} from "next/dist/server/api-utils";
 import {parseCookies} from "nookies";
@@ -64,6 +64,11 @@ export default function Home() {
           <Button type="submit" mt="6" colorScheme="blue">
             Entrar
           </Button>
+          <Flex direction="column" justify="center" align="center">
+            <Text as="b">Deseja Contratar um Plano de Assinatura?</Text>
+          <Link href="https://lifewall.art/plano-de-assinatura/" color="blue.300">Clique Aqui!</Link>
+          </Flex>
+          
         </Stack>
       </Flex>
     </Flex>
